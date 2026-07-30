@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="A standalone MELP prototype for testing a wall-mounted air-conditioner model in 3D and augmented reality."
+    />
+    <meta name="theme-color" content="#102e2a" />
+    <title>MELP AR Prototype</title>
+    <link rel="preconnect" href="https://ajax.googleapis.com" />
+    <link rel="stylesheet" href="./css/style.css" />
+    <!-- model-viewer v4.2.0: the only external runtime dependency. -->
+    <script
+      type="module"
+      src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.2.0/model-viewer.min.js"
+    ></script>
+    <script src="./js/script.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="./" aria-label="MELP AR Prototype home">
+        <span class="brand-mark" aria-hidden="true">M</span>
+        <span>MELP <strong>LABS</strong></span>
+      </a>
+      <span class="prototype-badge">Prototype environment</span>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="page-title">
+        <div class="hero-copy">
+          <p class="eyebrow">Web-based product preview</p>
+          <h1 id="page-title">See the fit.<br /><em>Before the install.</em></h1>
+          <p class="intro">
+            Inspect the air conditioner in 3D, then preview it at true scale on
+            your wall using a supported mobile device.
+          </p>
+
+          <div class="feature-list" aria-label="Viewer capabilities">
+            <span><i aria-hidden="true">↻</i> 360° interaction</span>
+            <span><i aria-hidden="true">⌖</i> Wall placement</span>
+            <span><i aria-hidden="true">1:1</i> Fixed scale</span>
+          </div>
+
+          <aside class="compatibility-card" aria-labelledby="compatibility-title">
+            <span class="compatibility-icon" aria-hidden="true">◉</span>
+            <div>
+              <h2 id="compatibility-title">Works across your devices</h2>
+              <p>
+                3D viewing works on modern desktop and mobile browsers. AR
+                requires a compatible Android or iPhone/iPad and may require HTTPS.
+              </p>
+            </div>
+          </aside>
+        </div>
+
+        <div class="viewer-column">
+          <div class="viewer-shell" id="viewer-shell">
+            <div class="viewer-topbar">
+              <span class="live-label"><i aria-hidden="true"></i> Live 3D preview</span>
+              <button
+                class="icon-button"
+                id="reset-view"
+                type="button"
+                aria-label="Reset model view"
+                title="Reset view"
+              >
+                ↻
+              </button>
+            </div>
+
+            <!--
+              Model paths are assigned in js/script.js so they are easy to change.
+              AR placement, scale, camera angle, rotation, lighting and shadows
+              can be adjusted on this element.
+            -->
+            <model-viewer
+              id="product-viewer"
+              alt="Interactive 3D model of a wall-mounted air conditioner"
+              camera-controls
+              touch-action="pan-y"
+              auto-rotate
+              auto-rotate-delay="1500"
+              rotation-per-second="18deg"
+              camera-orbit="25deg 72deg 105%"
+              min-camera-orbit="auto auto 55%"
+              max-camera-orbit="auto auto 300%"
+              shadow-intensity="1.25"
+              shadow-softness="0.9"
+              exposure="1"
+              environment-image="neutral"
+              interaction-prompt="auto"
+              ar
+              ar-modes="webxr scene-viewer quick-look"
+              ar-placement="wall"
+              ar-scale="fixed"
+              xr-environment
+            >
+              <button
+                class="ar-button"
+                id="ar-button"
+                slot="ar-button"
+                type="button"
+                aria-label="View the air conditioner in your space"
+                disabled
+              >
+                <span aria-hidden="true">⌑</span>
+                View in Your Space
+              </button>
+            </model-viewer>
+
+            <div class="empty-state" id="empty-state">
+              <div class="model-placeholder" aria-hidden="true">
+                <span class="unit-vent"></span>
+              </div>
+              <p class="empty-title">Your 3D model goes here</p>
+              <p>
+                Add <code>model.glb</code> to the <code>assets</code> folder,
+                then refresh this page.
+              </p>
+            </div>
+
+            <div class="loading-overlay" id="loading-overlay" hidden>
+              <div class="loader" aria-hidden="true"></div>
+              <p>Loading 3D model…</p>
+              <div
+                class="progress-track"
+                role="progressbar"
+                aria-label="Model loading progress"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="0"
+              >
+                <span id="progress-bar"></span>
+              </div>
+              <output id="progress-value">0%</output>
+            </div>
+
+            <div class="interaction-hint" id="interaction-hint" hidden>
+              <span>Drag to rotate</span>
+              <span>Scroll or pinch to zoom</span>
+            </div>
+          </div>
+
+          <div class="status-panel" aria-live="polite" aria-atomic="true">
+            <span class="status-indicator" id="status-indicator" aria-hidden="true"></span>
+            <div>
+              <strong id="status-title">Checking model files…</strong>
+              <p id="status-message">
+                Looking for <code>./assets/model.glb</code>.
+              </p>
+            </div>
+          </div>
+
+          <p class="ios-note" id="ios-note">
+            <span aria-hidden="true">ⓘ</span>
+            iPhone/iPad Quick Look testing requires
+            <code>./assets/model.usdz</code>.
+          </p>
+        </div>
+      </section>
+
+      <section class="steps" aria-labelledby="steps-title">
+        <div>
+          <p class="eyebrow">How to use the prototype</p>
+          <h2 id="steps-title">From screen to space in three steps.</h2>
+        </div>
+        <ol>
+          <li>
+            <span>01</span>
+            <div><strong>Explore</strong><p>Drag to rotate. Scroll or pinch to zoom.</p></div>
+          </li>
+          <li>
+            <span>02</span>
+            <div><strong>Launch AR</strong><p>Tap “View in Your Space” on a supported phone.</p></div>
+          </li>
+          <li>
+            <span>03</span>
+            <div><strong>Place on wall</strong><p>Allow camera access and scan a clear wall surface.</p></div>
+          </li>
+        </ol>
+      </section>
+    </main>
+
+    <footer>
+      <p>MELP AR Prototype <span>•</span> Standalone testing environment</p>
+      <p>Model files remain local to this project.</p>
+    </footer>
+  </body>
+</html>
